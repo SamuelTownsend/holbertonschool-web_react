@@ -1,40 +1,30 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import CourseListRow from './CourseListRow';
+import { shallow, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 
-CourseListRow.propTypes = {
-	isHeader: PropTypes.bool,
-	textFirstCell: PropTypes.string.isRequired,
-	textSecondCell: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-};
+configure({adapter: new Adapter()});
 
-CourseListRow.defaultProps = {
-	isHeader: false,
-	textSecondCell: null,
-};
+describe('CourseListRow', () => {
+	it('CourseListRow renders w/o crashing', () => {
+		const wrapper = shallow(<CourseListRow textFirstCell="First cell"/>);
+		expect(wrapper.exists()).toBe(true);
+	});
 
-const headerStyle = '#deb5b545'
+	it('CourseListRow renders one cell w/colSpan=2 when textSecondCell=false', () => {
+		const wrapper = shallow(
+			<CourseListRow textFirstCell="First cell" isHeader={true}/>);
+		expect(wrapper.find('th').length).toBe(1);
+		expect(wrapper.find('th').text()).toBe("First cell");
+		expect(wrapper.find('th').prop('colSpan')).toBe(2);
+	});
 
-const regularStyle = '#f5f5f5ab'
-
-export default function CourseListRow ({ isHeader, textFirstCell,
-																				 textSecondCell}) {
-		return (
-			<tr style={{ backgroundColor: isHeader ? headerStyle : regularStyle}}>
-				{isHeader && textSecondCell === null && (
-					<th colSpan={2}>{textFirstCell}</th>
-				)}
-				{isHeader && textSecondCell && (
-					<>
-						<th>{textFirstCell}</th>
-						<th>{textSecondCell}</th>
-					</>
-				)}
-				{!isHeader && (
-					<>
-						<td>{textFirstCell}</td>
-						<td>{textSecondCell}</td>
-					</>
-				)}
-			</tr>
-	)
-}
+	it('CourseListRow renders one cell w/colSpan=2 when textSecondCell=false', () => {
+		const wrapper = shallow(
+			<CourseListRow
+				textFirstCell="First cell"
+				isHeader={true}
+				textSecondCell="Second cell"/>);
+		expect(wrapper.find('th').length).toBe(2);
+	});
+});
