@@ -5,7 +5,13 @@ import { css, StyleSheet } from 'aphrodite';
 export default function NotificationItem({type, html, value, markAsRead}) {
 	const styles = StyleSheet.create({
 		li: {
-			color: type === 'urgent' ? 'rgb(255, 60, 0)' : 'rgb(1, 1, 170)'
+			color: type === 'urgent' ? 'rgb(255, 60, 0)' : 'rgb(1, 1, 170)',
+			'@media (max-width: 900px)': {
+				width: '100%',
+				borderBottom: '1px solid black',
+				fontSize: '20px',
+				padding: '10px 8px'
+			}
 		}
 	});
 

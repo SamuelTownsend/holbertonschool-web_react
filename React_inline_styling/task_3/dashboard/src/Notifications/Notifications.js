@@ -5,36 +5,6 @@ import closeIcon from '../assets/close-icon.png';
 import NotificationItemShape from './NotificationItemShape';
 import { css, StyleSheet } from 'aphrodite';
 
-const styles = StyleSheet.create({
-  notifications: {
-		border: '1px rgb(221, 72, 72) dashed',
-		padding: '5px'
-	},
-
-	notificationDiv: {
-		display: 'flex',
-		flexDirection: 'column',
-		float: 'right',
-		marginRight: '1rem'
-	},
-
-	button: {
-		float: 'right',
-		marginTop: '0.5rem',
-		border: '0',
-		background: 'white',
-		position: 'absolute',
-		right: '25px',
-		top: '25px',
-	},
-
-	menuItem: {
-		textAlign: 'right',
-		paddingBottom: '0.5rem',
-		fontWeight: 'bold'
-	}
-});
-
 export default class Notifications extends React.Component {
 	constructor() {
 		super();
@@ -53,6 +23,53 @@ export default class Notifications extends React.Component {
 
 	render () {
 		const { displayDrawer, listNotifications } = this.props;
+
+		const floatDirection = displayDrawer ? 'left' : 'right';
+
+		const styles = StyleSheet.create({
+			notifications: {
+				border: '1px rgb(221, 72, 72) dashed',
+				padding: '5px',
+				'@media (max-width: 900px)': {
+					height: '100%',
+					width: '100%',
+					backgroundColor: 'white',
+					position: 'absolute',
+					border: 'none'
+				}
+			},
+		
+			notificationDiv: {
+				display: 'flex',
+				flexDirection: 'column',
+				float: 'right',
+				marginRight: '1rem',
+				'@media (max-width: 900px)': {
+					float: floatDirection
+				}
+			},
+		
+			button: {
+				float: 'right',
+				marginTop: '0.75rem',
+				border: '0',
+				background: 'white',
+				position: 'absolute',
+				right: '25px',
+				top: '25px',
+				'@media (max-width: 900px)': {
+					marginTop: '10px',
+					position: 'absolute'
+				}
+			},
+		
+			menuItem: {
+				textAlign: 'right',
+				paddingBottom: '0.5rem',
+				fontWeight: 'bold'
+			}
+		});
+
 		return (
 			<div id="notificationDiv"
 				className={`notificationDiv ${css(styles.notificationDiv)}`}>
