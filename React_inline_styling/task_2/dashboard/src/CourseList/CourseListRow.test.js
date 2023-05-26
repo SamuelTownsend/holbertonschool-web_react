@@ -9,6 +9,8 @@ describe('CourseListRow', () => {
 	it('CourseListRow renders w/o crashing', () => {
 		const wrapper = shallow(<CourseListRow textFirstCell="First cell"/>);
 		expect(wrapper.exists()).toBe(true);
+		jest.useFakeTimers();
+		jest.runAllTimers();
 	});
 
 	it('CourseListRow renders one cell w/colSpan=2 when textSecondCell=false', () => {
@@ -17,6 +19,8 @@ describe('CourseListRow', () => {
 		expect(wrapper.find('th').length).toBe(1);
 		expect(wrapper.find('th').text()).toBe("First cell");
 		expect(wrapper.find('th').prop('colSpan')).toBe(2);
+		jest.useFakeTimers();
+		jest.runAllTimers();
 	});
 
 	it('CourseListRow renders one cell w/colSpan=2 when textSecondCell=false', () => {
@@ -26,5 +30,7 @@ describe('CourseListRow', () => {
 				isHeader={true}
 				textSecondCell="Second cell"/>);
 		expect(wrapper.find('th').length).toBe(2);
+		jest.useFakeTimers();
+		jest.runAllTimers();
 	});
 });
