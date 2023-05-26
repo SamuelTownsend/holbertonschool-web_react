@@ -12,12 +12,14 @@ CourseListRow.defaultProps = {
 	textSecondCell: null,
 };
 
-export default function CourseListRow ({ 
-	isHeader,
-	textFirstCell,
-	textSecondCell}) {
+const headerStyle = '#deb5b545'
+
+const regularStyle = '#f5f5f5ab'
+
+export default function CourseListRow ({ isHeader, textFirstCell,
+																				 textSecondCell}) {
 		return (
-			<tr>
+			<tr style={{ backgroundColor: isHeader ? headerStyle : regularStyle}}>
 				{isHeader && textSecondCell === null && (
 					<th colSpan={2}>{textFirstCell}</th>
 				)}
