@@ -3,10 +3,17 @@ import { shallow, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import BodySectionWithMarginBottom from './BodySectionWithMarginBottom';
 import 'jsdom-global/register';
+import { StyleSheetTestUtils } from 'aphrodite';
 
 configure({adapter: new Adapter()});
 
 describe('<BodySectionWithMarginBottom />', () => {
+	beforeEach(() => {
+		StyleSheetTestUtils.suppressStyleInjection();
+	});
+	afterEach(() => {
+		StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+	});
 	it('BodySectionWithMarginBottom renders w/o crashing', () => {
 		const wrapper = shallow(<BodySectionWithMarginBottom />);
 		expect(wrapper.exists()).toBe(true);
