@@ -2,6 +2,7 @@ import React from 'react';
 import CourseList from './CourseList';
 import { shallow, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import { StyleSheetTestUtils } from 'aphrodite';
 
 configure({adapter: new Adapter()});
 
@@ -12,10 +13,18 @@ const listCourses = [
 ]
 
 describe('CourseList', () => {
+	beforeEach(() => {
+		StyleSheetTestUtils.suppressStyleInjection();
+	});
+	afterEach(() => {
+		StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+	});
 	it('CourseList renders w/o crashing & renders 5 CourseListRow items', () => {
 		const wrapper = shallow(
 			<CourseList listCourses={listCourses}/>);
 		expect(wrapper.find('CourseListRow').length).toBe(5);
+		jest.useFakeTimers();
+		jest.runAllTimers();
 	});
 
 	it('CourseList renders correctly when listCourses=[]', () => {
@@ -25,5 +34,7 @@ describe('CourseList', () => {
 		expect(wrapper.find('CourseListRow').last().props().textFirstCell).toBe(
 			'No course available yet'
 		);
+		jest.useFakeTimers();
+		jest.runAllTimers();
 	});
 });
