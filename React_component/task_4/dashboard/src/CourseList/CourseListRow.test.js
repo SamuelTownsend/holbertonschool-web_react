@@ -1,30 +1,31 @@
-import React from 'react';
-import CourseListRow from './CourseListRow';
-import { shallow, configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import React from "react";
+import CourseListRow from "./CourseListRow";
+import { EnzymeAdapter } from "enzyme";
+import { shallow } from "enzyme";
 
-configure({adapter: new Adapter()});
+describe("<CourseListRow />", () => {
+  it("renders without crashing", () => {
+    const wrapper = shallow(<CourseListRow />);
+    expect(wrapper.exists()).toBe(true);
+  });
 
-describe('CourseListRow', () => {
-	it('CourseListRow renders w/o crashing', () => {
-		const wrapper = shallow(<CourseListRow textFirstCell="First cell"/>);
-		expect(wrapper.exists()).toBe(true);
-	});
 
-	it('CourseListRow renders one cell w/colSpan=2 when textSecondCell=false', () => {
-		const wrapper = shallow(
-			<CourseListRow textFirstCell="First cell" isHeader={true}/>);
-		expect(wrapper.find('th').length).toBe(1);
-		expect(wrapper.find('th').text()).toBe("First cell");
-		expect(wrapper.find('th').prop('colSpan')).toBe(2);
-	});
+  it('CourseListRow with isHeader true and no textSecondCell', () => {
+    const wrapper = shallow(
+      <CourseListRow isHeader={true} textFirstCell="test" />
+    );
+    expect(wrapper.find('th').length).toEqual(1);
+    expect(wrapper.find('th').text()).toEqual('test');
+    expect(wrapper.find('th').prop('colSpan')).toEqual(2);
+  });
 
-	it('CourseListRow renders one cell w/colSpan=2 when textSecondCell=false', () => {
-		const wrapper = shallow(
-			<CourseListRow
-				textFirstCell="First cell"
-				isHeader={true}
-				textSecondCell="Second cell"/>);
-		expect(wrapper.find('th').length).toBe(2);
-	});
+  it('CourseListRow with isHeader true and textSecondCell', () => {
+    const wrapper = shallow(
+      <CourseListRow isHeader={true} textFirstCell="test" textSecondCell="test2" />
+    );
+    expect(wrapper.find('th').length).toEqual(2);
+    expect(wrapper.find('th').at(0).text()).toEqual('test');
+    expect(wrapper.find('th').at(1).text()).toEqual('test2');
+  });
 });
+

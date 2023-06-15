@@ -1,12 +1,24 @@
+/* .Notifications {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    height: 300px;
+} */
+
+
 .Notifications {
-	border: 1px rgb(221, 72, 72) dashed;
-	padding: 5px;
+  padding: 1rem;
+border: 1px red dashed;
+  border-radius: 5px;
+padding: 1rem;
+  overflow: auto;
 }
 
-[data-pritory="default"] {
-	color: rgb(1, 1, 170);
+[data-priority="default"] {
+color: blue;
 }
 
 [data-priority="urgent"] {
-	color: rgb(255, 60, 0);
+color: red;
 }
