@@ -1,33 +1,35 @@
 import App from './App';
+import { shallow } from 'enzyme';
 import React from 'react';
-import { shallow, configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-
-configure({adapter: new Adapter()});
 
 describe('<App />', () => {
-	it('App renders w/o crashing', () => {
-		const wrapper = shallow(<App />);
-		expect(wrapper.exists()).toBe(true);
-	});
+  it('Tests that App renders without crashing', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.exists()).toBe(true);
+  });
 
-	it('Notifications renders', () => {
-		const wrapper = shallow(<App />);
-		expect(wrapper.find('Notifications').exists()).toBe(true);
-	});
+  // should contain the Notifications component
+  it('Tests that App renders a Notifications component', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find('Notifications').exists()).toBe(true);
+  });
 
-	it('Header renders', () => {
-		const wrapper = shallow(<App />);
-		expect(wrapper.find('Header').exists()).toBe(true);
-	});
+  // should contain the Header component
+  it('Tests that App renders a Header component', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find('Header').exists()).toBe(true);
+  });
 
-	it('Login renders', () => {
-		const wrapper = shallow(<App />);
-		expect(wrapper.find('Login').exists()).toBe(true);
-	});
+  // should contain the Login component
+  it('Tests that App renders a Login component', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find('Login').exists()).toBe(true);
+  });
 
-	it('Footer renders', () => {
-		const wrapper = shallow(<App />);
-		expect(wrapper.find('Footer').exists()).toBe(true);
-	});
-})
+  // should contain the Footer component
+  it('Tests that App renders a Footer component', () => {
+    const wrapper = shallow(<App />);
+    expect(wrapper.find('Footer').exists()).toBe(true);
+  });
+ 
+});

@@ -1,28 +1,29 @@
 import logo from '../assets/holberton-logo.jpg';
-import './App.css';
-import { getFooterCopy, getFullYear } from '../utils/utils';
-import Notifications from '../Notifications/Notifications';
+// import './App.css';
+import './App.css'
+import React from 'react';
+import { getFullYear, getFooterCopy } from '../utils/utils';
 import Header from '../Header/Header';
-import Footer from '../Footer/Footer';
+import Notifications from '../Notifications/Notifications';
 import Login from '../Login/Login';
-
+import Footer from '../Footer/Footer';
 
 function App() {
   return (
-    <React.Fragment>
+    <>
       <Notifications />
       <div className="App">
-        <div className="App-header">
+        <header className="App-header">
           <Header />
-        </div>
-        <div className="App-body">
+        </header>
+        <div className='App-body'>
           <Login />
         </div>
-        <div className="App-footer">
+        <footer className='App-footer'>
           <Footer />
-        </div>
+        </footer>
       </div>
-    </React.Fragment>
+    </>
   );
 }
 
