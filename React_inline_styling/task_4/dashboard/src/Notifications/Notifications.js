@@ -1,132 +1,122 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import NotificationItem from './NotificationItem';
+import React, { Component } from 'react';
 import closeIcon from '../assets/close-icon.png';
+import NotificationItem from './NotificationItem';
+import PropTypes from 'prop-types';
 import NotificationItemShape from './NotificationItemShape';
-import { css, StyleSheet } from 'aphrodite';
+import { StyleSheet, css } from 'aphrodite';
 
-export default class Notifications extends React.Component {
-	constructor() {
-		super();
-		this.markAsRead = this.markAsRead.bind(this);
-	}
-	
-	markAsRead(id) {
-		console.log(`Notification ${id} has been marked as read`);
-	}
 
-	shouldComponentUpdate(newProps) {
-		return (
-			newProps.listNotifications.length > this.props.listNotifications.length
-			);
-	}
 
-	render () {
-		const { displayDrawer, listNotifications } = this.props;
+class Notifications extends Component {
 
-		const floatDirection = displayDrawer ? 'left' : 'right';
+  constructor(props) {
+    super(props);
+    this.markAsRead = this.markAsRead.bind(this);
+  }
 
-		const styles = StyleSheet.create({
-			notifications: {
-				border: '1px rgb(221, 72, 72) dashed',
-				padding: '5px',
-				'@media (max-width: 900px)': {
-					height: '100%',
-					width: '100%',
-					backgroundColor: 'white',
-					position: 'absolute',
-					border: 'none'
-				}
-			},
-		
-			notificationDiv: {
-				display: 'flex',
-				flexDirection: 'column',
-				float: 'right',
-				marginRight: '1rem',
-				'@media (max-width: 900px)': {
-					float: floatDirection
-				}
-			},
-		
-			button: {
-				float: 'right',
-				border: '0',
-				background: 'white',
-				'@media (max-width: 900px)': {
-					marginTop: '10px',
-					position: 'absolute'
-				}
-			},
-		
-			menuItem: {
-				textAlign: 'right',
-				paddingBottom: '0.5rem',
-				fontWeight: 'bold',
-				backgroundColor: '#fff8f8',
-				display: displayDrawer ? 'none' : 'block',
-				'@media (max-width: 900px)': {
-					display: 'none'
-				},
-				':hover': {
-					cursor: 'pointer',
-					animationName: [
-						{ 
-							'0%': {transform: 'translateY(0px)'},
-					 		'10%': {transform: 'translateY(-5px)'},
-							'35%': {transform: 'translateY(5px)'},
-							'60%': {transform: 'translateY(0px)'}
-						},
-						{
-							from: {opacity: 0.5},
-							to: {opacity: 1}
-						}],
-					animationDuration: '0.5s, 1s',
-					animationIterationCount: 3
-				}
-			}
-		});
+  markAsRead(id) {
+    console.log(`Notification ${id} has been marked as read`);
+  }
 
-		return (
-			<div id="notificationDiv"
-				className={`notificationDiv ${css(styles.notificationDiv)}`}>
-				<div className={`menuItem ${css(styles.menuItem)}`}
-					id='menuItem'>
-					Your Notifications
-				</div>
-				{displayDrawer && (
-					<div className={`Notifications ${css(styles.notifications)}`}
-						id='Notifications'>
-						<button
-							className={`button ${css(styles.button)}`}
-							aria-label="Close"
-							onClick={() => console.log('Close button has been clicked')}>
-								<img src={closeIcon} height="15px" width="15px" alt="close icon" />
-						</button>
-						{listNotifications.length ?
-							(<p>Here is the list of notifications</p>) : 
-							(<p>No new notification for now</p>)}
-						{listNotifications ? (
-							listNotifications.map((notification) => (
-								<NotificationItem key={notification.id}
-									type={notification.type}
-									value={notification.value}
-									html={notification.html}
-									markAsRead={() => this.markAsRead(notification.id)} />))) :
-								(<tr>No course available yet</tr>)}
-					</div>
-				)}
-			</div>
-		);
-	}
+  shouldComponentUpdate(nextProps) {
+    return (
+      nextProps.listNotifications.length > this.props.listNotifications.length
+    );
+  }
+
+  render() {
+    const bounce = {  '0%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-5px)' }, '100%': { transform: 'translateY(5px)' },};
+    const fade = {  from: { opacity: 0.5 }, to: { opacity: 1 } };
+    const style = StyleSheet.create({
+      menuItem: {
+        marginRight: '1rem',
+        ':hover': {
+          cursor: 'pointer',
+          animationName: [fade, bounce],
+          animationDuration: '1s, 0.5s',
+          animationIterationCount: 3,
+        },
+      },
+      noteBox: {
+        border: '1px red dashed',
+        padding: '1rem',
+        margin: '1rem',
+        // if displayDrawer is true 900 Media Query
+        '@media (max-width: 900px)': {
+          border: 'none',
+          padding: '0',
+          margin: '0',
+          width: this.displayDrawer ? '0vw' : '100vw',
+          height: this.displayDrawer ? '0vw' : '100vw',
+          position: this.displayDrawer ? 'absolute' : 'absolute',
+          backgroundColor: 'white',
+        },
+      },
+      notes: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'end',
+        position: 'absolute',
+        right: 0,
+      },
+    });
+
+    const displayDrawer = this.props.displayDrawer;
+    const listNotifications = this.props.listNotifications;
+    return (
+      <div className={`Notfication-menu ${css(style.notes)}`}>
+        <div className={`menuItem ${css(style.menuItem)}`}>Your notifications</div>
+        {displayDrawer && (
+          <div className={`Notifications ${css(style.noteBox)}`}>
+            {listNotifications.length ? (
+              <p>Here is the list of notifications</p>
+            ) : (
+              <p>No new notification for now</p>
+            )}
+            {listNotifications ? (
+              listNotifications.map((notif) => (
+                <NotificationItem
+                  key={notif.id}
+                  type={notif.type}
+                  value={notif.value}
+                  html={notif.html}
+                  markAsRead={() => this.markAsRead(notif.id)}
+                />
+              ))
+            ) : (
+              <tr>No course available yet</tr>
+            )}
+
+            <button
+              style={{
+                border: 0,
+                background: 'white',
+                position: 'absolute',
+                right: '35px',
+                top: '50px',
+              }}
+              aria-label='Close'
+              onClick={() => console.log('Close button has been clicked')}
+            >
+              <img src={closeIcon} height='15px' width='15' alt='close icon' />
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  }
 }
 
 Notifications.propTypes = {
-	displayDrawer: PropTypes.bool,
-	listNotifications: PropTypes.arrayOf(NotificationItemShape),
+  displayDrawer: PropTypes.bool,
+  listNotifications: PropTypes.arrayOf(NotificationItemShape),
 };
 
 Notifications.defaultProps = {
-	displayDrawer: false,
-	listNotifications: [],
-}
+  displayDrawer: false,
+  listNotifications: [],
+};
+
+
+
+export default Notifications;

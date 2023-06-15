@@ -1,46 +1,32 @@
-import React from 'react';
-import { css, StyleSheet } from 'aphrodite';
+import React from "react";
+import { StyleSheet, css } from "aphrodite";
 
-const styles = StyleSheet.create({
-	login: {
-		marginLeft: '2.5rem',
-		marginTop: '5rem'
-	},
+function Login() {
+  const style = StyleSheet.create({
+    label: {
+      marginRight: "15px",
+    },
+    ep: {
+      marginLeft: "8px",
+    },
+  });
 
-  email: {
-		marginLeft: '.5rem',
-		marginRight: '.5rem'
-	},
-
-	password: {
-		marginLeft: '.5rem',
-		marginRight: '.5rem',
-	}
-});
-
-export default function Login() {
   return (
-		<React.Fragment>
-			<div className={`App-login ${css(styles.login)}`}>
-				<p>Login to access the full dashboard</p>
-				<form className="Form-body">
-					<label htmlFor="email">
-						Email:
-						<input type="email"
-							id="email"
-							name="email"
-							className={`App-email ${css(styles.email)}`} />
-					</label>
-					<label htmlFor="password">
-						Password:
-						<input type="password"
-							id="password"
-							name="password"
-							className={`App-password ${css(styles.password)}`} />
-					</label>
-					<input type="submit" value="OK" />
-				</form>
-			</div>
-		</React.Fragment>
+    <React.Fragment>
+      <div className="login-form">
+        <p>Login to access the full dashboard</p>
+        <form className="Login">
+          <label htmlFor="email" className={css(style.label)} >Email:
+            <input className={css(style.ep)} type="email" id="email" name="email" />
+          </label>
+          <label htmlFor="password">Password:
+            <input className={css(style.ep)}  type="password" id="password" name="password" />
+          </label>
+          <input type="submit" value="OK" />
+        </form>
+      </div>
+    </React.Fragment>
   );
 }
+
+export default Login;

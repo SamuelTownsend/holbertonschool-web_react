@@ -1,22 +1,28 @@
 import React from 'react';
-import { shallow, configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { shallow } from 'enzyme';
 import BodySection from './BodySection';
 
-configure({adapter: new Adapter()});
+describe('BodySection', () => {
+  it('renders without crashing', () => {
+    const wrapper = shallow(<BodySection />);
+    expect(wrapper.exists());
+  });
 
-describe('<BodySection />', () => {
-	it('BodySection renders w/o crashing', () => {
-		const wrapper = shallow(<BodySection />);
-		expect(wrapper.exists()).toBe(true);
-	});
+  it('renders one div with class bodySection', () => {
+    const wrapper = shallow(<BodySection />);
+    expect(wrapper.find('div.bodySection')).toHaveLength(1);
+  });
 
-	it('BodySection renders h2 with title and children', () => {
-		const wrapper = shallow(<BodySection title="title">
-				<p>Lorem Ipsum</p>
-			</BodySection>);
-		expect(wrapper.find('h2').exists()).toBe(true);
-		expect(wrapper.find('p').exists()).toBe(true);
-		expect(wrapper.find('p').text()).toBe('Lorem Ipsum');
-	});
+  // Component should render correctly the children and one h2 element
+  it('renders the children and one h2 element', () => {
+    const wrapper = shallow(
+      <BodySection title="test title">
+        <p>test children node</p>
+      </BodySection>
+    );
+    expect(wrapper.find('h2')).toHaveLength(1);
+    expect(wrapper.find('h2').text()).toEqual('test title');
+    expect(wrapper.find('p')).toHaveLength(1);
+    expect(wrapper.find('p').text()).toEqual('test children node');
+  });
 });

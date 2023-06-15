@@ -1,52 +1,57 @@
-import React from 'react';
-import CourseListRow from './CourseListRow';
-import CourseShape from './CourseShape';
-import PropTypes from 'prop-types';
-import { css, StyleSheet } from 'aphrodite';
+import React from "react";
+import PropTypes from "prop-types";
+import CourseListRow from "./CourseListRow";
+import CourseShape from "./CourseShape";
+import { StyleSheet, css } from "aphrodite";
 
-const styles = StyleSheet.create({
-  table: {
-		margin: '5rem 0 0 2.5rem',
-		border: '1px solid lightgrey',
-		width: '100%',
-		textAlign: 'left'
-	},
-	
-	thead: {
-		fontWeight: 'bold',
-		':nth-child(1n) > :first-child': {
-			textAlign: 'center'
-		}
-	}
-});
+
+function CourseList({ listCourses }) {
+  const style = StyleSheet.create({
+    table: {
+      border: '1px solid gray',
+      width: '100%',
+      borderCollapse: 'collapse',
+      textAlign: 'left',
+    },
+    thead: {
+      fontWeight: 'bold',
+      ':nth-child(1n) > :first-child': {
+        textAlign: 'center',
+      },
+    },
+  });
+
+return (
+  <table className={`Courselist ${css(style.table)}`}>
+    <thead className={css(style.thead)}>
+      <CourseListRow textFirstCell="Available courses" isHeader={true} />
+      <CourseListRow textFirstCell="Course name" textSecondCell="Credit" isHeader={true} />
+    </thead>
+    <tbody>
+      {listCourses.length === 0 ? (
+        <CourseListRow textFirstCell="No course available yet" />
+      ) : (
+        listCourses.map((course) => (
+          <CourseListRow
+            key={course.id}
+            textFirstCell={course.name}
+            textSecondCell={course.credit}
+          />
+        ))
+      )}
+    </tbody>
+  </table>
+);
+}
 
 CourseList.propTypes = {
-	listCourses: PropTypes.arrayOf(CourseShape),
+  listCourses: PropTypes.arrayOf(CourseShape),
 };
 
 CourseList.defaultProps = {
-	listCourses: [],
+  listCourses: [],
 };
 
-export default function CourseList({ listCourses }) {
-	return (
-		<table id="CourseList" className={`table ${css(styles.table)}`}>
-			<thead className={`thead ${css(styles.thead)}`}>
-				<CourseListRow
-					textFirstCell='Available courses'
-					isHeader={true} />
-				<CourseListRow
-					textFirstCell='Course name'
-					isHeader={true}
-					textSecondCell='Credit' />
-			</thead>
-			<tbody>
-				{listCourses.length ? (listCourses.map((course) => (
-					<CourseListRow key={course.id}
-						textFirstCell={course.name}
-						textSecondCell={course.credit} />))) : (
-					<CourseListRow textFirstCell='No course available yet' />)}
-			</tbody>
-		</table>
-	);
-}
+
+
+export default CourseList;

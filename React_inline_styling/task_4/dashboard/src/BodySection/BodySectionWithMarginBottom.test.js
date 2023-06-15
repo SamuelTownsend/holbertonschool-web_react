@@ -1,30 +1,33 @@
 import React from 'react';
-import { shallow, configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { shallow } from 'enzyme';
+
 import BodySectionWithMarginBottom from './BodySectionWithMarginBottom';
-import 'jsdom-global/register';
 import { StyleSheetTestUtils } from 'aphrodite';
 
-configure({adapter: new Adapter()});
+StyleSheetTestUtils.suppressStyleInjection();
 
-describe('<BodySectionWithMarginBottom />', () => {
-	beforeEach(() => {
-		StyleSheetTestUtils.suppressStyleInjection();
-	});
-	afterEach(() => {
-		StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
-	});
-	it('BodySectionWithMarginBottom renders w/o crashing', () => {
-		const wrapper = shallow(<BodySectionWithMarginBottom />);
-		expect(wrapper.exists()).toBe(true);
-	});
+describe('BodySectionWithMarginBottom', () => {
+  it('renders without crashing', () => {
+    const wrapper = shallow(<BodySectionWithMarginBottom />);
+    expect(wrapper.exists());
+  });
 
-	it('BSWMB renders BodySection and children', () => {
-		const wrapper = shallow(<BodySectionWithMarginBottom title="title">
-				<p>Lorem Ipsum</p>
-			</BodySectionWithMarginBottom>);
-		const bodySection = wrapper
-			.findWhere(n => n.prop('title') === 'title');
-		expect(bodySection.length).toBe(1);
-	});
+  it('renders one div with class bodySectionWithMargin', () => {
+    const wrapper = shallow(<BodySectionWithMarginBottom />);
+    expect(wrapper.find('div.bodySectionWithMargin')).toHaveLength(1);
+  });
+
+  it('renders a BodySection component and that the props are passed correctly to the child component', () => {
+    const wrapper = shallow(
+      <BodySectionWithMarginBottom title="test title">
+        <p>test children node</p>
+      </BodySectionWithMarginBottom>
+    );
+    expect(wrapper.find('BodySection')).toHaveLength(1);
+    expect(wrapper.find('BodySection').props().title).toEqual('test title');
+    expect(wrapper.find('BodySection').props().children).toEqual(<p>test children node</p>);
+  });
+
+ 
+
 });

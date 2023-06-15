@@ -1,41 +1,38 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { css, StyleSheet } from 'aphrodite';
 
-export default function NotificationItem({type, html, value, markAsRead}) {
-	const styles = StyleSheet.create({
-		li: {
-			color: type === 'urgent' ? 'rgb(255, 60, 0)' : 'rgb(1, 1, 170)'
-		}
-	});
+class NotificationItem extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.markAsRead = this.markAsRead.bind(this);
+    this.value = this.props.value;
+    this.type = this.props.type;
+    this.html = this.props.html;
+  }
 
-	if (value) {
-		return <li className={`li ${css(styles.li)}`}
-							data-priority={type}
-							onClick={markAsRead}>
-							{value}
-					 </li>;
-	}
-	return <li data-priority={type}
-		dangerouslySetInnerHTML={html}
-		onClick={markAsRead}
-		className={`li ${css(styles.li)}`} />;
+  markAsRead() {
+    this.props.markAsRead(this.value);
+  }
+
+  render() {
+    if (this.value) {
+      return ( <li onClick={this.markAsRead} data-priority={this.type}>{this.value}</li> );
+    }
+    return ( <li onClick={this.markAsRead} data-priority={this.type} dangerouslySetInnerHTML={this.html} /> );
+  }
 }
-
-NotificationItem.propTypes = {
-	type: PropTypes.string,
-	value: PropTypes.string,
-	html: PropTypes.shape({
-		__html: PropTypes.string,
-	}),
-	markAsRead: PropTypes.func.isRequired,
+NotificationItem.propTypes = { 
+  type: PropTypes.string,
+  html: PropTypes.shape({ __html: PropTypes.string }),
+  value: PropTypes.string,
+  markAsRead: PropTypes.func.isRequired,
 };
 
 NotificationItem.defaultProps = {
-	type: 'default',
-}
-
-// export default React.memo(NotificationItem)
-// commented this out because although it makes the function "pure"
-// it breaks several tests and I've had it up to here with fiddling
-// with these tests
+  type: 'default',
+  html: {},
+  value: '',
+  markAsRead: () => {},  
+};
+  
+export default NotificationItem;

@@ -1,40 +1,33 @@
-import React from 'react';
-import CourseList from './CourseList';
-import { shallow, configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import React from "react";
+import { shallow } from "enzyme";
+import CourseList from "./CourseList";
 import { StyleSheetTestUtils } from 'aphrodite';
 
-configure({adapter: new Adapter()});
+StyleSheetTestUtils.suppressStyleInjection();
 
-const listCourses = [
-	{ id: '1', name: 'ES6', credit: 60},
-	{ id: '2', name: 'Webpack', credit: 20},
-	{ id: '3', name: 'React', credit: 40},
-]
+describe("CourseList", () => {
+  it("renders without crashing", () => {
+    const wrapper = shallow(<CourseList />);
+    expect(wrapper.exists()).toBe(true);
+  });
 
-describe('CourseList', () => {
-	beforeEach(() => {
-		StyleSheetTestUtils.suppressStyleInjection();
-	});
-	afterEach(() => {
-		StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
-	});
-	it('CourseList renders w/o crashing & renders 5 CourseListRow items', () => {
-		const wrapper = shallow(
-			<CourseList listCourses={listCourses}/>);
-		expect(wrapper.find('CourseListRow').length).toBe(5);
-		jest.useFakeTimers();
-		jest.runAllTimers();
-	});
+  // 3 CourseListRows rendered with empty course list passed
+  it("renders three CourseListRow components with empty course list", () => {
+    const wrapper = shallow(<CourseList />);
+    expect(wrapper.find("CourseListRow").length).toBe(3);
+  });
+  it('Verifies that 4 CourseListRows rendered correctly with 2 courses passed', () => {
+    const listCourses = [
+      { id: 1, name: 'Course 1', credit: 1 },
+      { id: 2, name: 'Course 2', credit: 2 },
+    ];
+    const wrapper = shallow(<CourseList listCourses={listCourses} />);
+    expect(wrapper.find('CourseListRow').length).toBe(4);
+    expect(wrapper.find('CourseListRow').get(2).props.textFirstCell).toBe(
+      'Course 1'
+    );
+    expect(wrapper.find('CourseListRow').get(3).props.textSecondCell).toBe(2);
+  });
 
-	it('CourseList renders correctly when listCourses=[]', () => {
-		const wrapper = shallow(
-			<CourseList listCourses={[]} />);
-		expect(wrapper.find('CourseListRow').length).toBe(3);
-		expect(wrapper.find('CourseListRow').last().props().textFirstCell).toBe(
-			'No course available yet'
-		);
-		jest.useFakeTimers();
-		jest.runAllTimers();
-	});
+
 });
